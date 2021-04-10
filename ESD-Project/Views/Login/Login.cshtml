@@ -1,0 +1,57 @@
+﻿@model ESD_Project.Models.User
+@using reCAPTCHA.MVC
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<section class="loginsection">
+    <div class="loginImag">
+        <img src="https://assets-global.website-files.com/5db35de024bb983af1b4e151/5eb274abca48d15ef5598b93_og-image-security.png" alt="">
+    </div>
+    <div class="loginContent">
+        <div class="loginForm">
+            <h2>Login</h2>
+            @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false, "", new { @class = "text-danger alert-danger alertDeplay" })
+                <div class="inputBX">
+                    <span>Username</span>
+                    @Html.TextBoxFor(m => m.Username, "", new { @placeholder = "Username" })
+                </div>
+                <div class="inputBX">
+                    <span>Password</span>
+                    @Html.PasswordFor(m => m.Password, new { @placeholder = "Password" })
+                </div>
+                <div class="rememberMe">
+                    <label for=""><input type="checkbox" name="" value="">Remember me</label>
+                </div>
+                <div class="inputBX">
+                    @Html.Recaptcha(publicKey: "6LcMf50aAAAAAI_xaQDtar99SOsGmC3QYAZ85nYN", theme: CaptchaTheme.Light, type: CaptchaType.Image, callback: "verifyCallback", expiredCallback: "expiredCallback")
+                </div>
+                <div class="inputBX">
+                    <input type="submit" name="Sign in" value="Sign in" id="login-btn" class="loginBtn">
+                </div>
+            }
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#login-btn').on('click', function (e) {
+                s
+                var el = $(this);
+                console.log('click')
+                el.prop('disabled', true);
+                setTimeout(function () {
+                    el.prop('disabled', false)
+                    console.log('asd')
+                })
+            })
+        })
+    </script>
+    }
+

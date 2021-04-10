@@ -1,0 +1,53 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/index.css")
+    @Styles.Render("~/Content/font-awesome/css/all.css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center ErrorContainer">
+        <div class="ErrorContent text-center">
+            <h2 class="ErrorTitle-h2">401</h2>
+            <h4 class="ErrorTitle-h4">Oops! Cannot access to this page</h4>
+            <p class="Error-p">You hava not authorize to access this page.</p>
+            @{var session = (ESD_Project.Common.UserLogin)Session[ESD_Project.Common.CommonConstants.USER_SESSION]; }
+            @if (session != null)
+            {
+                switch (session.GroupId)
+                {
+                    case "Admin":
+                        <a href="@Url.Action("Index","Admin")" class="btn btnBack-2">Back To Home</a>
+                        break;
+                    case "Student":
+                        <a href="@Url.Action("Index","Student")" class="btn btnBack-2">Back To Home</a>
+                        break;
+                    case "Manager":
+                        <a href="@Url.Action("Index","Manager")" class="btn btnBack-2">Back To Home</a>
+                        break;
+                    case "Coordinator":
+                        <a href="@Url.Action("Index","Coordinator")" class="btn btnBack-2">Back To Home</a>
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                <a href="@Url.Action("Index","Home")" class="btn btnBack-2">Back To Home</a>
+            }
+
+
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

@@ -1,0 +1,162 @@
+﻿
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    ViewBag.Title = "Index";
+}
+
+<h2>AdminPage</h2>
+<hr>
+<div class="social-box my-5" >
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-2">
+            <div class="box d-flex rounded-3 border-start border-primary border-3 align-content-center py-3 px-2 shadow">
+                <div class="flex-grow-1">
+                    <p class="m-0 text-primary">Number of users</p>
+                    <p class="fs-5 fw-bold m-0">@ViewBag.userCount</p>
+                </div>
+                <div class="text-center d-block">
+                    <i class="far fa-user text-black-50" style="font-size:2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-2">
+            <div class="box d-flex rounded-3 border-start border-danger border-3 align-content-center py-3 px-2 shadow">
+                <div class="flex-grow-1">
+                    <p class="m-0 text-danger">Number of Topics</p>
+                    <p class="fs-5 fw-bold m-0">@ViewBag.topicCount</p>
+                </div>
+                <div class="text-center d-block">
+                    <i class="fas fa-lightbulb text-black-50" style="font-size:2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-2">
+            <div class="box d-flex rounded-3 border-start border-success border-3 align-content-center py-3 px-2 shadow">
+                <div class="flex-grow-1">
+                    <p class="m-0 text-success">Number of Posts</p>
+                    <p class="fs-5 fw-bold m-0">@ViewBag.postCount</p>
+                </div>
+                <div class="text-center d-block">
+                    <i class="fas fa-file-alt text-black-50" style="font-size:2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-2">
+            <div class="box d-flex rounded-3 border-start border-warning border-3 align-content-center py-3 px-2 shadow">
+                <div class="flex-grow-1">
+                    <p class="m-0 text-warning">Number of Files</p>
+                    <p class="fs-5 fw-bold m-0">@ViewBag.fileCount</p>
+                </div>
+                <div class="text-center d-block">
+                    <i class="fas fa-folder-open text-black-50" style="font-size:2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>    
+</div>
+<hr>
+
+
+<div class="social-box my-3">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-xs-12 text-center">
+            <a href="@Url.Action("Index","Users")">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>Manage Accounts</h3>
+                    </div>
+                    <div class="box-text">
+                        <span>With supporting text below as a natural lead-in to additional content.</span>
+                    </div>
+                    <div class="box-btn">
+                        <a class="text-success" href="@Url.Action("Index","Users")">Go &#8811;</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-xs-12 text-center">
+            <a href="@Url.Action("Index","Majors")">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>Manage Faculty</h3>
+                    </div>
+                    <div class="box-text">
+                        <span>With supporting text below as a natural lead-in to additional content.</span>
+                    </div>
+                    <div class="box-btn">
+                        <a class="text-success" href="@Url.Action("Index","Majors")">Go &#8811;</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-xs-12 text-center">
+            <a href="@Url.Action("Index","Posts")">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>Manage Posts</h3>
+                    </div>
+                    <div class="box-text">
+                        <span>With supporting text below as a natural lead-in to additional content.</span>
+                    </div>
+                    <div class="box-btn">
+                        <a class="text-success" href="@Url.Action("Index","Posts")">Go &#8811;</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-xs-12 text-center">
+            <a href="@Url.Action("Index","Topics")">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>Manage Topics</h3>
+                    </div>
+                    <div class="box-text">
+                        <span>With supporting text below as a natural lead-in to additional content.</span>
+                    </div>
+                    <div class="box-btn">
+                        <a class="text-success" href="@Url.Action("Index","Topics")">Go &#8811;</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-xs-12 text-center">
+            <a href="@Url.Action("Chart","Admin")">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>Manage Chart</h3>
+                    </div>
+                    <div class="box-text">
+                        <span>With supporting text below as a natural lead-in to additional content.</span>
+                    </div>
+                    <div class="box-btn">
+                        <a class="text-success" href="@Url.Action("Chart","Admin")">Go &#8811;</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-xs-12 text-center">
+            <a href="@Url.Action("Index","AcademicYears")">
+                <div class="box">
+                    <div class="box-title">
+                        <h3>Manage Academic Year</h3>
+                    </div>
+                    <div class="box-text">
+                        <span>With supporting text below as a natural lead-in to additional content.</span>
+                    </div>
+                    <div class="box-btn">
+                        <a class="text-success" href="@Url.Action("Index","AcademicYears")">Go &#8811;</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

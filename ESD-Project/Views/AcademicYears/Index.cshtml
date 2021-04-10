@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ESD_Project.Models.AcademicYear>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Delete", "AcademicYears", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger alertDeplay" })
+    <div class="d-flex justify-content-between">
+        <div class="d-inline">
+            <a href="@Url.Action("Create", "AcademicYears")" class="btn btn-primary"><i class="fas fa-plus-circle me-2"></i>Create </a>
+            <button type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-minus-circle me-2"></i> Delete</button>
+        </div>
+    </div>
+
+    <div class="card my-3">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            Academic Year Table
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover my-3 dataTable" width="100%">
+                    <thead>
+                        <tr>
+                            <th th scope="col"><input type="checkbox" id="checkBoxAll" class="form-check-input" /></th>
+                            <th th scope="col"> @Html.DisplayNameFor(model => model.StartYear)</th>
+                            <th scope="col"> @Html.DisplayNameFor(model => model.EndYear)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.CreateBy)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.CreateDate)</th>
+                            <th scope="col">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><input type="checkbox" name="ID" value="@item.AcademicYearId" class="form-check-input chkCheckBoxId" /></td>
+                                <td> @Html.DisplayFor(modelItem => item.StartYear) </td>
+                                <td>@Html.DisplayFor(modelItem => item.EndYear)</td>
+                                <td> @Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreateBy)</td>
+                                <td>
+                                    <a href="@Url.Action("Details", "Majors", new { id = item.AcademicYearId })"><i class="fas fa-info-circle"></i></a>
+                                    <a href="@Url.Action("Edit", "Majors", new { id = item.AcademicYearId })"><i class="far fa-edit"></i></a>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,46 @@
+﻿@model ESD_Project.Models.Post
+@{
+    ViewBag.Title = "EditPost";
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+<div id="uploader" class="UploadForm shadow-lg">
+    @using (Html.BeginForm("EditPost", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        if (ViewBag.EditPost != null)
+        {
+            <div class="alertDeplay alert alert-success">
+                @ViewBag.EditPost
+            </div>
+        }
+        <div class="d-flex justify-content-center p-2 submitTitle">
+            <h2>Edit Post</h2>
+        </div>
+        <div class="submitContent p-3">
+            @Html.HiddenFor(model => model.PostId)
+            @Html.HiddenFor(model => model.CreateBy)
+            @Html.HiddenFor(model => model.CreateDate)
+            @Html.HiddenFor(model => model.TopicId)
+            @Html.HiddenFor(model => model.MajorId)
+            <div class="dropzone mb-4"><input type="file" name="postedFile" value="" class="border p-1 uploadeBroswer w-100" multiple> </div>
+            <div class="list my-2">
+                <ul class="ul-editPost">
+                    @foreach (var item in Model.FileDetails)
+                    {
+                        <li class="d-flex justify-content-between">
+                            <a href="javascript:;" onclick="Download(@item.FileDetailsId)" class=""> <i class="far fa-file-alt me-2"></i> @item.FileName</a>
+                            <a href="javascript:void(0);" data-id="@item.FileDetailsId" class="deleteItem"><i class="fas fa-minus-circle"></i></a>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between p-2">
+                <a href="@Url.Action("SubmitPost", "Student", new {myPostsId = Model.PostId })" class="btn btnBack"> Back </a>
+                <input type="submit" name="btnUpload" value="Save" class="btn btnSubmit">
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "datatables@1.10.21",
+      "destination": "Scripts/datatables/",
+      "files": [
+        "js/dataTables.bootstrap4.min.js"
+      ]
+    },
+    {
+      "library": "Chart.js@2.9.4",
+      "destination": "Scripts/Chart.js/",
+      "files": [
+        "Chart.min.js",
+        "Chart.min.css"
+      ]
+    }
+  ]
+}

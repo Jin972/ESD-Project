@@ -1,0 +1,34 @@
+﻿@model IEnumerable<ESD_Project.Models.Major>
+@{
+    Layout = "~/Views/Shared/ManagerLayout.cshtml";
+    ViewBag.Title = "Index";
+}
+<div class="social-box">
+    <div class="row">
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 col-xs-12 text-center">
+                    <a href="@Url.Action("ListTopic","Manager", new { id = item.MajorId})">
+                        <div class="box">
+                            <div class="box-title">
+                                <h3>@item.Name</h3>
+                            </div>
+                            <div class="box-text">
+                                <span>@Html.DisplayFor(modelitem => item.Description)</span>
+                            </div>
+                            <div class="box-btn">
+                                <a href="@Url.Action("ListTopic","Manager", new { id = item.MajorId})">Go &#8811;</a>
+                            </div>
+                        </div>
+                     </a>
+                </div>
+            }
+        }
+
+    </div>
+</div>     
+
+
+

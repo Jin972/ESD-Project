@@ -1,0 +1,19 @@
+if (ModelState.IsValid)
+            {
+                byte[] bytes;
+                var session = (UserLogin)Session[CommonConstants.USER_SESSION];
+                using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                {
+                    bytes = br.ReadBytes(postedFile.ContentLength);
+                } 
+                db.Entry(new Post { 
+                    FileName = Path.GetFileName(postedFile.FileName),
+                    File = postedFile.ContentType,
+                    FileData = bytes,
+                    ModifyBy = session.Username,
+                    ModifyDate = DateTime.Now
+                }).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("SubmitPosts");
+            }
+            return View();

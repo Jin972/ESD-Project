@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/index.css")
+    @Styles.Render("~/Content/font-awesome/css/all.css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="container-fluid" style="background-color:#1e222e;">
+        <div class="container d-flex justify-content-end p-2">
+            @{var session = (ESD_Project.Common.UserLogin)Session[ESD_Project.Common.CommonConstants.USER_SESSION]; }
+            @if (session != null)
+            {
+            <div class="btn-group">
+                <a class="btn dropdown-toggle text-light" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                    <i class="fas fa-user fa-fw"></i>
+                    @session.Username
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="@Url.Action("Profile","Manager", new {id = session.ID})">Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Setting</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Logout","Login")">Logout</a></li>
+                </ul>
+            </div>
+            }
+            else
+            {
+                <a class=" text-white fs-5 mx-1 px-3" href="@Url.Action("Login", "Login")">Sign In <i class="fas fa-sign-in-alt"></i></a>
+            }
+        </div>
+    </div>
+    <div class="container-fluid clearfix d-flex justify-content-center">
+        <div class="logo-web "><a href="#"><img src="https://greenwich.edu.vn/images/config/logo_1454075749.png" class="w-100"></a></div>
+    </div>
+
+    <div class="wrapper sticky-top shadow-lg">
+        <nav>
+            <input type="checkbox" id="show-search">
+            <input type="checkbox" id="show-menu">
+            <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <div class="content">
+                <div class="logo"><a href="@Url.Action("Index", "Manager")">News</a></div>
+                <ul class="links">
+                    <li><a href="@Url.Action("Index","Manager")">Home</a></li>
+                    <li>
+                        <a href="#" class="desktop-link">
+                            Faculty
+                            <span class="fas fa-caret-down"> </span>
+                        </a>
+                        <input type="checkbox" id="show-features">
+                        <label for="show-features">
+                            Faculty
+                            <span class="fas fa-caret-down"> </span>
+                        </label>
+
+                        <ul>
+                            <li><a href="#">IT</a></li>
+                            <li><a href="#">Design</a></li>
+                            <li><a href="#">Business</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="desktop-link">
+                            Category
+                            <span class="fas fa-caret-down"> </span>
+                        </a>
+                        <input type="checkbox" id="show-services">
+                        <label for="show-services">
+                            Category
+                            <span class="fas fa-caret-down"> </span>
+                        </label>
+                        <ul>
+                            <li><a href="#">Entertainment</a></li>
+                            <li><a href="#">Art</a></li>
+                            <li><a href="#">Sport</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+            <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
+            <form action="#" class="search-box">
+                <input type="text" placeholder="Type Something to Search..." required>
+                <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
+            </form>
+        </nav>
+    </div>
+
+    <div class="container mt-4 mb-4" style="min-height: 50%;">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <div class="shadow rounded">
+                        <div class="footer-title text-center p-2" style="background-color: rgba(0,0,0,0.7); font-size:1.2rem;">TP. HỒ CHÍ MINH.</div>
+                        <ul class="footer-content-group">
+                            <li class="footer-content mb-2">
+                                <div class="text-post-popular px-2 ">
+                                    <h6>CS1: Số 142-146 Phạm Phú Thứ - Phường 4 - Quận 6 (Cuối đường 3/2) </h6>
+                                </div>
+                            </li>
+                            <li class="footer-content mb-2">
+                                <div class="text-post-popular px-2 ">
+                                    <h6>CS2: 205 Nguyễn Xí, Phường 26, Bình Thạnh.</h6>
+
+                                </div>
+
+                            </li>
+                            <li class="footer-content mb-2">
+                                <div class="text-post-popular px-2 ">
+                                    <h6>
+                                        Hotline: 0968.670.804 | 0936.600.861
+                                    </h6>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <div class="shadow rounded">
+                        <div class="text-center p-2" style="background-color: rgba(0,0,0,0.7); font-size:1.2rem;">
+                            HÀ NỘI.
+                        </div>
+                        <ul class="footer-content-group">
+                            <li class="footer-content mb-2">
+                                <div class="text-post-popular px-2 ">
+                                    <h6>Tòa nhà DETECH -Số 8 Tôn Thất Thuyết-P.Mỹ Đình 2-Q.Nam Từ Liêm</h6>
+                                </div>
+                            </li>
+                            <li class="footer-content mb-2">
+                                <div class="text-post-popular px-2 ">
+                                    <h6>Điện thoại: 024.7300.2266</h6>
+                                </div>
+                            </li>
+                            <li class="footer-content mb-2">
+                                <div class="text-post-popular px-2 ">
+                                    <h6>Hotline: 0981.558.080 | 0971.274.545</h6>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <div class="shadow rounded">
+                        <div class="text-center p-2" style="background-color: rgba(0,0,0,0.7); font-size:1.2rem;">VIDEO OF THE DAY</div>
+                        <ul class="footer-content-group">
+                            <li class="footer-content ">
+                                <iframe width="100%" src="https://www.youtube.com/embed/K93d63k1TRk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <div class="shadow rounded">
+                        <div class="text-center p-2" style="background-color: rgba(0,0,0,0.7);font-size:1.2rem">FOLLOW US</div>
+                        <ul class="footer-content-group">
+                            <li class="footer-content d-flex justify-content-center">
+                                <a href="#" alt=""><i class="fab fa-facebook p-1" style="color:#170cc0;font-size:1.5rem;"></i> </a>
+                                <a href="#"><i class="fab fa-instagram p-1" style="color:#150000;font-size:1.5rem;"></i> </a>
+                                <a href="#"><i class="fab fa-twitter p-1" style="color:#5182cc;font-size:1.5rem;"></i></a>
+                                <a href="#"><i class="fab fa-youtube p-1" style="color:#fa0909;font-size:1.5rem;"></i></a>
+                                <a href="#"><i class="fab fa-pinterest p-1" style="color:#a90000;font-size:1.5rem;"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid" style="background-color:rgba(0,0,0,.35)">
+            <div class="container p-3 text-center" style="color:white;">
+                Copyright &copy; @DateTime.Now.Year
+            </div>
+        </div>
+    </footer>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/Chart.min.js")
+    @Scripts.Render("~/Scripts/Script.js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

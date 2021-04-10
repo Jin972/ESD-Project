@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Chart";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Chart</h2>
+<hr>
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-area mr-1"></i>
+                The Percent Of Report Each Faculty
+            </div>
+            <div class="card-body border-1 border-dark-50 rounded"><canvas id="myPieChart" width="100%" height="40"></canvas></div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card mb-4 border-1 border-dark-50 rounded" style="height: 400px; padding:1px">
+            <div class="card-header">
+                <i class="fas fa-chart-bar mr-1"></i>
+                The Count Of Report Each Faculty
+            </div>
+            <div class="card-body"><canvas id="myBarChart" class="w-100" height="40"></canvas></div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card mb-4 border-1 border-dark-50 rounded" style="height: 400px; padding:1px">
+            <div class="card-header">
+                <i class="fas fa-chart-bar mr-1"></i>
+                The Count Of Contributor Each Faculty
+            </div>
+            <div class="card-body"><canvas id="contributorStastitic" class="w-100" height="40"></canvas></div>
+        </div>
+    </div>
+</div>
+    @section scripts{
+        <script type="text/javascript">
+        // Bar Chart Example
+            var reArray = @Html.Raw(Json.Encode(ViewBag.PostCount));
+            var faculty = @Html.Raw(Json.Encode(ViewBag.Faculty));
+            var ctx = $("#myBarChart");
+            var myLineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                labels: faculty,
+                    datasets: [{
+                        label: "Posts",
+                        backgroundColor: ["rgba(244,67,54,.5)","rgba(255,193,7,.5)", "rgba(255,235,59,.5)", "rgba(76,214,167,.5)"],
+                        borderColor: ["rgb(242,166,54)", "rgb(145,65,72)", "rgb(74,25,92)"],
+                        borderWidth:1,
+                    data: reArray,
+                }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: { xAxes: { ticks: { beginAtZero: true } } },
+                    legend: {display:true}
+                }
+            });
+
+            var PostPercent = @Html.Raw(Json.Encode(ViewBag.PostPercent));
+            var faculty = @Html.Raw(Json.Encode(ViewBag.Faculty));
+            var pieChartPosition = $("#myPieChart");
+            var MyPieChart = new Chart(pieChartPosition, {
+                type: 'doughnut',
+                data: {
+                    labels: faculty,
+                    datasets: [{
+                        labels: "Contributor",
+                        backgroundColor: ["rgba(244,67,54,.5)", "rgba(255,193,7,.5)", "rgba(255,235,59,.5)", "rgba(76,214,167,.5)"],
+                        borderColor: ["rgb(242,166,54)", "rgb(145,65,72)", "rgb(74,25,92)"],
+                        data: PostPercent,
+                        borderWidth: 1,
+                        hoverOffset: 4,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    legend: { display: true },
+
+                }
+            });
+
+            var conCount = @Html.Raw(Json.Encode(ViewBag.Contributor));
+            var faculty = @Html.Raw(Json.Encode(ViewBag.Faculty));
+            var e = $("#contributorStastitic");
+            var myLineChart = new Chart(e, {
+                type: 'bar',
+                data: {
+                    labels: faculty,
+                    datasets: [{
+                        label: "Contributor",
+                        backgroundColor: ["rgba(244,67,54,.5)", "rgba(255,193,7,.5)", "rgba(255,235,59,.5)", "rgba(76,214,167,.5)"],
+                        borderColor: ["rgb(242,166,54)", "rgb(145,65,72)", "rgb(74,25,92)"],
+                        borderWidth: 1,
+                        data: conCount,
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: { xAxes: { ticks: { beginAtZero: true } } },
+                    legend: { display: true }
+                }
+            });
+
+        </script>
+    }

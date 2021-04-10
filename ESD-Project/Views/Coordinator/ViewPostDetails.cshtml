@@ -1,0 +1,194 @@
+﻿@model ESD_Project.Models.Post
+
+@{
+    ViewBag.Title = "ViewPostDetails";
+    Layout = "~/Views/Shared/CoordinatorLayout.cshtml";
+}
+@{var session = (ESD_Project.Common.UserLogin)Session[ESD_Project.Common.CommonConstants.USER_SESSION]; }
+<h2>View Post Details</h2>
+<hr>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="submitContent p-3">
+        <h4>Information:</h4>
+        <hr />
+        <table class="table table-striped table-hover shadow mb-5">
+            @Html.HiddenFor(model => model.PostId)
+            @Html.HiddenFor(model => model.CreateBy)
+            @Html.HiddenFor(model => model.CreateDate)
+            @Html.HiddenFor(model => model.TopicId)
+            @Html.HiddenFor(model => model.MajorId)
+            <tr>
+                <th scope="row">Status</th>
+                <td> @Html.DisplayFor(model => model.Status)</td>
+            </tr>
+            <tr>
+                <th scope="row">Deadline</th>
+                <td>
+                    @Model.Topic.ClosureDate
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Submitter</th>
+                <td>@Html.DisplayFor(model => model.CreateBy) </td>
+            </tr>
+            <tr>
+                <th scope="row">Submission Date</th>
+                <td>@Html.DisplayFor(model => model.CreateDate) </td>
+            </tr>
+        </table>
+
+        <div class="mb-5">
+            <h4>Submission:</h4>
+            <hr />
+            <div class="dropzone mb-4"><input type="file" name="postedFile" value="" class="border p-1 uploadeBroswer w-100" multiple> </div>
+            <div class="list my-2">
+                <ul class="ul-editPost">
+                    @if (Model.FileDetails != null)
+                    {
+                        foreach (var item in Model.FileDetails)
+                        {
+                            <li class="d-flex justify-content-between">
+                                <a href="javascript:;" onclick="Download(@item.FileDetailsId)" class=""> <i class="far fa-file-alt me-2"></i> @item.FileName</a>
+                                <a href="javascript:void(0);" data-id="@item.FileDetailsId" class="deleteItem"><i class="fas fa-minus-circle"></i></a>
+                            </li>
+
+                        }
+                    }
+
+                </ul>
+            </div>
+        </div>
+
+        <div class=" mb-5">
+            <h4>Censorship:</h4>
+            <hr>
+            <div class="d-flex justify-content-between flex-column flex-sm-row ">
+                <div>
+                    @Html.RadioButtonFor(model => model.Status, true)
+                    <span>Qualified</span>
+                </div>
+                <div>
+                    @Html.RadioButtonFor(model => model.Status, false)
+                    <span>Unsatisfactory</span>
+                </div>
+                <div></div>
+            </div>
+        </div>
+
+        <hr class="mt-3">
+
+        <div class="d-flex justify-content-center p-2">
+            <input type="submit" name="btnUpload" value="Save" class="btn btnSubmit">
+        </div>
+    </div>
+}
+
+<div class="mb-5">
+    @Html.ActionLink("Back to List", "ViewListPost")
+</div>
+
+<div id="CommentBox" class="d-flex justify-content-center row mb-5" style="display:none">
+    <h4>Comment:</h4>
+    <hr>
+    <div class="col-md-8">
+        @using (Html.BeginForm("AddComment", "Coordinator", FormMethod.Post))
+        {
+            <div class="bg-light p-2">
+                <div class="d-flex flex-row align-items-start">
+                    <input class="d-none" name="PostId" value="@Model.PostId" />
+                    <input class="d-none" name="UserId" value="@session.ID" />
+                    <img class="rounded-circle img-thumbnail" src="@Url.Action("Show", "Admin", new { fileId = session.AvatarId})" width="40" height="40">
+                    <textarea class="form-control ml-1 shadow-none textarea" name="CmtContent" required></textarea>
+                </div>
+                <div class="d-flex justify-content-center py-3">
+                    <input type="submit" class="btn btnPrimary" value="Submit" />
+                </div>     
+            </div>
+        }
+        <hr>
+        @if (Model.Comment != null)
+        {
+            foreach (var item in Model.Comment)
+            {
+                <div class="d-flex flex-column comment-section border-bottom border-1 border-dark">
+                    <div class="bg-white p-2">
+                        <div class="d-flex flex-row user-info">
+                            @if (item.User.FileDetails != null)
+                            {
+                                foreach (var file in item.User.FileDetails)
+                                {
+                                    <img class="rounded-circle" src="@Url.Action("Show", "Admin", new{ fileId = file.FileDetailsId})" width="40" height="40">
+                                }
+                            }
+                            <div class="d-flex flex-column justify-content-start ml-2">
+                                <span class="d-block name">@item.User.Username</span>
+                                <small class="date text-black-50">Send Date - @item.CmtDate</small>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            @item.Content
+                        </div>
+                    </div>
+                    <div class="bg-white">
+                        <div class="d-flex flex-row fs-12">
+                            <div class="like p-2 cursor"><i class="far fa-thumbs-up"></i><span class="ml-1">Like</span></div>
+                            @if (item.UserId == session.ID)
+                            {
+                                <div class="like p-2 cursor"><i class="far fa-edit"></i><span class="ml-1">Edit</span></div>
+                                <a data-id="@item.CommentId" class="deleteComment like p-2 cursor"><i class="fas fa-trash-alt"></i><span class="ml-1">Delete</span></a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+        $('.deleteItem').click(function (e) {
+    e.preventDefault();
+    var $ctrl = $(this);
+    if (confirm('Do you really want to delete this file?')) {
+        $.ajax({
+            url: '@Url.Action("DeleteFile","Student")',
+            type: 'POST',
+            data: { id: $(this).data('id') }
+        }).done(function (data) {
+            if (data.Result == "OK") {
+                $ctrl.closest('li').remove();
+            }
+            else if (data.Result.Message) {
+                alert(data.Result.Message);
+            }
+        }).fail(function () {
+            alert("There is something wrong. Please try again.");
+        })
+    }
+});
+//Delete the comment
+$('.deleteComment').click(function (e) {
+    e.preventDefault();
+    var $ctrl = $(this);
+    if (confirm('Do you really want to delete this file?')) {
+        $.ajax({
+            url: '@Url.Action("DeleteComment", "Coordinator")',
+            type: 'POST',
+            data: { id: $(this).data('id') }
+        }).done(function (data) {
+            if (data.Result == "OK") {
+                $ctrl.closest('.comment-section div').remove();
+            }
+            else if (data.Result.Message) {
+                alert(data.Result.Message);
+            }
+        }).fail(function () {
+            alert("There is something wrong. Please try again.");
+        })
+    }
+});
+    </script>
+}

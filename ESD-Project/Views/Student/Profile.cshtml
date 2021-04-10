@@ -1,0 +1,66 @@
+﻿@model ESD_Project.Models.User
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+
+<div class="p-3 rounded-3 bg-light shadow-lg">
+    <div class="row ">
+        <div class="col-sm-12 col-md-4 text-center mb-3 position-relative">
+            <div class="position-relative rounded-3 shadow">
+                @if (Model.FileDetails != null)
+                {
+                    foreach (var file in Model.FileDetails)
+                    {
+                        <img src="@Url.Action("Show", "Admin", new { fileId = file.FileDetailsId})" alt="" class="rounded-3 w-100">
+                    }
+                }
+                <div class="position-absolute top-0 start-0 w-100 h-100 rounded-3" style="background: rgba(0,0,0,0.2)">
+                </div>
+            </div>
+            <a href="@Url.Action("editProfile","Student",new { id = Model.UserId })" class="position-absolute top-50 start-50 text-info" style="transform: translate(-50%,-50%)"><i class="fas fa-edit bg-light p-1 rounded" style="font-size: 2.5rem"></i></a>
+        </div>
+
+        <div class="col-sm-12 col-md-8 mb-3">
+            <h2 class="d-block text-center ">Information</h2>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-group p-2">
+                        <i class="fas fa-signature text-info"></i>
+                        <span>@Html.DisplayFor(model => model.Name)</span>
+                    </div>
+
+                    <div class="form-group p-2">
+                        <i class="far fa-envelope text-info"></i>
+                        <span>@Html.DisplayFor(model => model.Email)</span>
+                    </div>
+
+                    <div class="form-group p-2">
+                        <i class="far fa-user text-info"></i>
+                        <span>@Html.DisplayFor(model => model.Username)</span>
+                    </div>
+
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-group p-2">
+                        <i class="fas fa-phone-alt text-info"></i>
+                        <span>@Html.DisplayFor(model => model.Phone)</span>
+                    </div>
+
+                    <div class="form-group p-2">
+                        <i class="fas fa-map-marker-alt text-info"></i>
+                        <span>@Html.DisplayFor(model => model.Address)</span>
+                    </div>
+
+                    <div class="form-group p-2">
+                        <i class="far fa-calendar-alt text-info"></i>
+                        <span>@Html.DisplayFor(model => model.DateOfBirth)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

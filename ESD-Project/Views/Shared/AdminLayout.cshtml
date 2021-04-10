@@ -1,0 +1,120 @@
+﻿
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,  shrink-to-fit=no ">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.80.0">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+    <title>@ViewBag.Title - Greenwich FPT University</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Admin.css")
+    @Styles.Render("~/Content/font-awesome/css/all.css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">News</a>
+
+        <div class="w-100"></div>
+        @{var session = (ESD_Project.Common.UserLogin)Session[ESD_Project.Common.CommonConstants.USER_SESSION]; }
+        @if (session != null)
+        {
+            <div class="btn-group">
+                <a class="btn dropdown-toggle text-light" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                    <i class="fas fa-user fa-fw"></i>
+                    @session.Username
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="@Url.Action("Profile","Admin", new {id = session.ID})">Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Setting</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Logout","Login")">Logout</a></li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            <a class=" text-white fs-5 mx-1 px-3" href="@Url.Action("Login", "Login")">Sign In <i class="fas fa-sign-in-alt"></i></a>
+        }
+        <button class="btn btn-link" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" href="@Url.Action("Index","Admin")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Management</div>
+                        <a class="nav-link" href="@Url.Action("Index","Users")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
+                            Account
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index","Majors")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-graduation-cap"></i></div>
+                            Faculty
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index","Topics")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-lightbulb"></i></div>
+                            Topic
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index","Posts")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
+                            Post
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index","AcademicYears")">
+                            <div class="sb-nav-link-icon"><i class="far fa-calendar-alt"></i></div>
+                            Academic Year
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        <a class="nav-link" href="@Url.Action("Chart","Admin")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Charts
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    Administrator
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </main>
+
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        Copyright &copy; @DateTime.Now.Year
+                        <div class="text-muted">Copyright &copy; Greenwich FPT - School News @DateTime.Now.Year</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/Chart.min.js")
+    @Scripts.Render("~/Scripts/Script.js")
+    @RenderSection("scripts", required: false)
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+</body>
+</html>

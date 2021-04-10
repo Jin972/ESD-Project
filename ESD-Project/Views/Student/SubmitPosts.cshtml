@@ -1,0 +1,292 @@
+﻿@model ESD_Project.Models.Post
+@{
+    ViewBag.Title = "SubmitPosts";
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+@{
+    var TimeNow = DateTime.Now;
+    var AfterDeadlineOneDay = ViewBag.DeadLine - TimeSpan.FromDays(1);
+    var session = (ESD_Project.Common.UserLogin)Session[ESD_Project.Common.CommonConstants.USER_SESSION];
+    var PostId = Html.DisplayFor(model => model.PostId);
+}
+<div class="text-center">
+    <h2>Submit Posts</h2>
+</div>
+
+
+@using (Html.BeginForm("Download", "Student", FormMethod.Post))
+{
+    <input type="hidden" id="hfFileId" name="FileId" />
+    <input type="submit" id="btnDownload" value="Download" style="display:none" />
+}
+<hr />
+<!--Confirm Form Delete-->
+@if (Model != null)
+{
+    <div id="confirmDeleteID" class="confirmDelete shadow" style="display: none;">
+        @using (Html.BeginForm("DeletePost", "Student", FormMethod.Post))
+        {
+            <div class="text-center p-lg-1">
+                <h5 class="text-danger fw-bold ">Warning!</h5>
+            </div>
+            <hr>
+            <div class="content-confirmDelete py-lg-3">
+                <input name="postId" value="@Model.PostId" />
+                <p class="fw-bold">Are you sure you want to delete this content?</p>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between text-center p-lg-1">
+                <input type="submit" class="btn btnConfirm" value="Confirm">
+                <a class="btn btnCancel" onclick="document.getElementById('confirmDeleteID').style.display='none'">Cancel</a>
+            </div>
+
+        }
+    </div>
+}
+
+<!--Confirm Form Edit-->
+<div id="uploaderPost" class="UploadForm shadow-lg" style="display: none;">
+    @using (Html.BeginForm("EditPost", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        if (ViewBag.EditPost != null)
+        {
+            <div class="alertDeplay alert alert-success">
+                @ViewBag.EditPost
+            </div>
+        }
+        <div class="d-flex justify-content-center p-2 submitTitle">
+            <h2>Edit Post</h2>
+        </div>
+        <div class="submitContent p-3">
+            @Html.HiddenFor(model => model.PostId)
+            @Html.HiddenFor(model => model.CreateBy)
+            @Html.HiddenFor(model => model.CreateDate)
+            @Html.HiddenFor(model => model.TopicId)
+            @Html.HiddenFor(model => model.MajorId)
+            <div class="dropzone mb-4"><input type="file" name="postedFile" value="" class="border p-1 uploadeBroswer w-100" multiple> </div>
+            <div class="list my-2">
+                <ul class="ul-editPost">
+                    @if (ViewBag.FileDetail != null)
+                    {
+                        foreach (var item in ViewBag.FileDetail)
+                        {
+                            <li class="d-flex justify-content-between">
+                                <a href="javascript:;" onclick="Download(@item.FileDetailsId)" class=""> <i class="far fa-file-alt me-2"></i> @item.FileName</a>
+                                <a href="javascript:void(0);" data-id="@item.FileDetailsId" class="deleteItem"><i class="fas fa-minus-circle"></i></a>
+                            </li>
+
+                        }
+                    }
+
+                </ul>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between p-2">
+                <a class="btn btnCancel" onclick="document.getElementById('uploaderPost').style.display='none'"> Back </a>
+                <input type="submit" name="btnUpload" value="Save" class="btn btnSubmit">
+            </div>
+        </div>
+    }
+</div>
+
+<!--Post Details-->
+<table class="table table-striped table-hover shadow mb-5">
+    <tr>
+        <th scope="row">Status</th>
+        <td> @Html.DisplayFor(model => model.Status)</td>
+    </tr>
+    <tr>
+        <th scope="row">Deadline</th>
+        <td>
+            <span id="topicDeadLine"></span>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">Your Posts</th>
+        <td>
+            <ul style="list-style-type:none; padding:0">
+                @if (ViewBag.FileDetail != null)
+                {
+                    foreach (var item in ViewBag.FileDetail)
+                    {
+                        <li>
+                            <a href="javascript:;" onclick="Download(@item.FileDetailsId)"> <i class="far fa-file-alt me-1"></i> @item.FileName</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </td>
+    </tr>
+</table>
+
+
+<!--Set Buttons-->
+@if (ViewBag.PostId == "Null" && TimeNow < ViewBag.DeadLine)
+{
+
+    using (Html.BeginForm("SubmitPosts", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="d-flex justify-content-between align-content-center" id="submitForm">
+            <input type="file" name="postedFile" multiple required />
+            <input type="submit" id="btnUpload" value="Upload" />
+        </div>
+    }
+
+}
+else if (ViewBag.PostId == null && TimeNow < AfterDeadlineOneDay)
+{
+    <div class="d-flex justify-content-around align-content-center">
+        <a class="btn btn-dark text-white px-2 py-1" onclick="document.getElementById('uploaderPost').style.display='block'">Edit Posts</a>
+        <a class="btn btn-dark" onclick="document.getElementById('confirmDeleteID').style.display='block'">Remove Posts</a>
+        @*<a href="javascript:void(0);" data-id="@Model.PostId" class="deletePost">Delete</a>*@
+    </div>
+}
+
+<!---Comment-->
+@if (Model != null)
+{
+    <div id="CommentBox" class="d-flex justify-content-center row my-5" style="display:none">
+        <h4>Comment:</h4>
+        <hr>
+
+        <div class="col-md-8">
+            @using (Html.BeginForm("AddComment", "Student", FormMethod.Post))
+            {
+                <div class="bg-light p-2">
+                    <div class="d-flex flex-row align-items-start">
+                        <input class="d-none" name="PostId" value="@Model.PostId" />
+                        <input class="d-none" name="UserId" value="@session.ID" />
+                        @if (session.AvatarId > 0)
+                        {
+                            <img class="rounded-circle" src="@Url.Action("Show", "Admin", new { fileId = session.AvatarId})" width="40" height="40">
+                        }
+                        else
+                        {
+                            <img class="rounded-circle" src="#" width="40" height="40">
+                        }
+
+                        <textarea class="form-control ml-1 shadow-none textarea" name="CmtContent" required></textarea>
+                    </div>
+                    <div class="d-flex justify-content-center py-3">
+                        <input type="submit" class="btn btnPrimary" value="Submit" />
+                    </div>
+                </div>
+            }
+            <hr>
+
+            <div class="d-flex flex-column comment-section">
+                @if (Model.Comment != null)
+                {
+                    foreach (var item in Model.Comment)
+                    {
+                        <div class="bg-white p-2">
+                            <div class="d-flex flex-row user-info">
+                                @if (item.User.FileDetails != null)
+                                {
+                                    foreach (var file in item.User.FileDetails)
+                                    {
+                                        <img class="rounded-circle" src="@Url.Action("Show", "Admin", new{ fileId = file.FileDetailsId})" width="40" height="40">
+                                    }
+                                }
+                                <div class="d-flex flex-column justify-content-start ml-2">
+                                    <span class="d-block name">@item.User.Username</span>
+                                    <small class="date text-black-50">Send Date - @item.CmtDate</small>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                @item.Content
+                            </div>
+                        </div>
+                        <div class="bg-white">
+                            <div class="d-flex flex-row fs-12">
+                                <div class="like p-2 cursor"><i class="far fa-thumbs-up"></i><span class="ml-1">Like</span></div>
+                                @if (item.UserId == session.ID)
+                                {
+                                    <div class="like p-2 cursor"><i class="far fa-edit"></i><span class="ml-1">Edit</span></div>
+                                    <a data-id="@item.CommentId" class="deleteComment like p-2 cursor"><i class="fas fa-trash-alt"></i><span class="ml-1">Delete</span></a>
+                                }
+                            </div>
+                        </div>
+                        <hr>
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        //CountDown to Deadline
+        var p = document.getElementById('topicDeadLine');
+        var deadline = new Date("@ViewBag.DeadLine.ToString("MM / dd / yyyy HH: mm: ss")").getTime();
+        //Tổng số giây
+        var countDown = setInterval(run, 1000);
+        function run() {
+            var now = new Date().getTime();
+            //Số s đến thời gian hiện tại
+            var timeRest = deadline - now;
+            //Số s còn lại để đến tết;
+            var day = Math.floor(timeRest / (1000 * 60 * 60 * 24));
+            //Số ngày còn lại
+            var hours = Math.floor(timeRest % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
+            // Số giờ còn lại
+            var minute = Math.floor(timeRest % (1000 * 60 * 60) / (1000 * 60));
+            // Số phút còn lại
+            var sec = Math.floor(timeRest % (1000 * 60) / (1000));
+            // Số giây còn lại
+            p.innerHTML = day + ' DAY ' + hours + ' : ' + minute + ' : ' + sec + "  ";
+            if (sec <= 0) {
+                clearInterval(counDown);
+                p.innerHTML = "Submissio time is over!";
+            }
+        };
+
+        //Delete the file
+$('.deleteItem').click(function (e) {
+    e.preventDefault();
+    var $ctrl = $(this);
+    if (confirm('Do you really want to delete this file?')) {
+        $.ajax({
+            url: '@Url.Action("DeleteFile","Student")',
+            type: 'POST',
+            data: { id: $(this).data('id') }
+        }).done(function (data) {
+            if (data.Result == "OK") {
+                $ctrl.closest('li').remove();
+            }
+            else if (data.Result.Message) {
+                alert(data.Result.Message);
+            }
+        }).fail(function () {
+            alert("There is something wrong. Please try again.");
+        })
+    }
+});
+//Delete the comment
+$('.deleteComment').click(function (e) {
+    e.preventDefault();
+    var $ctrl = $(this);
+    if (confirm('Do you really want to delete this file?')) {
+        $.ajax({
+            url: '@Url.Action("DeleteComment", "Coordinator")',
+            type: 'POST',
+            data: { id: $(this).data('id') }
+        }).done(function (data) {
+            if (data.Result == "OK") {
+                $ctrl.closest('.comment-section div').remove();
+            }
+            else if (data.Result.Message) {
+                alert(data.Result.Message);
+            }
+        }).fail(function () {
+            alert("There is something wrong. Please try again.");
+        })
+    }
+});
+    </script>
+}
